@@ -17,24 +17,34 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ajr.process.service.dto.ChainComponentDTO;
 import com.ajr.process.service.dto.ChainDTO;
+import com.ajr.process.service.dto.ChainProjDTO;
 import com.ajr.process.service.services.ProcessServiceChainManagerService;
 
 @Controller
 @Path("/chainProjects")
 public class ProjectServiceChainManagerController {
-	
+
 	@Autowired
 	ProcessServiceChainManagerService manager;
 
 	@GET
-	@Path("list/{project}")
+	@Path("/list/{project}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<ChainDTO> getProjectsList(@PathParam("project") String project) {
+	public List<String> getProjectsList(@PathParam("project") String project) {
 
 		return manager.getChainProjectsList(project);
 
 	}
 	
+	@GET
+	@Path("/selected/{project}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getProjectSelected(@PathParam("project") String project) {
+
+		return manager.getChainProjectSelected(project);
+
+	}
+
 	@GET
 	@Path("{projectId}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -43,45 +53,66 @@ public class ProjectServiceChainManagerController {
 		return manager.getChainProjectById(projectId);
 
 	}
-	
+
 	@POST
 	@Path("post/{project}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Transactional
-	public Response createProject(@PathParam("project") String project, ChainDTO chainProject) {
+	public Response createProject(@PathParam("project") String project,
+			ChainProjDTO chainProject) {
 
 		manager.insertProject(project, chainProject);
-		
+
 		String result = "Project created : " + chainProject;
-		
+
 		return Response.status(201).entity(result).build();
 
-	}	
+	}
 	
 	@POST
-	@Path("post/create/components/{projectId}")
+	@Path("post/selectedOptions/{projectId}/{chainProj}/{component}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Transactional
-	public Response createProjectComponents(@PathParam("projectId") int projectId, List<ChainComponentDTO> components) {
+	public Response updateProjectComponents(
+			@PathParam("projectId") int projectId, @PathParam("chainProj") String chainPrj,
+			@PathParam("component") String comp) {
 
-		manager.insertProjectComponents(projectId, components);
-		
-		String result = "Project Components created!";
-		
+		manager.updateSelectedProjectComponent(projectId, chainPrj, comp);
+
+		String result = "Selected Project/Component updated!";
+
 		return Response.status(201).entity(result).build();
 
 	}	
-	
+
+	@POST
+	@Path("post/components/{projectId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Transactional
+	public Response createProjectComponents(
+			@PathParam("projectId") int projectId,
+			List<ChainComponentDTO> components) {
+
+		manager.insertProjectComponents(projectId, components);
+
+		String result = "Project Components created!";
+
+		return Response.status(201).entity(result).build();
+
+	}
+
 	@POST
 	@Path("post/update/components/{projectId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Transactional
-	public Response updateProjectComponents(@PathParam("projectId") int projectId, List<ChainComponentDTO> components) {
+	public Response updateProjectComponents(
+			@PathParam("projectId") int projectId,
+			List<ChainComponentDTO> components) {
 
 		manager.updateProjectComponents(projectId, components);
-		
+
 		String result = "Project Components updated!";
-		
+
 		return Response.status(201).entity(result).build();
 
 	}
