@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ajr.process.service.dto.ChainComponentDTO;
 import com.ajr.process.service.dto.ChainDTO;
 import com.ajr.process.service.dto.ChainProjDTO;
+import com.ajr.process.service.dto.ChainProjIdDescDTO;
 import com.ajr.process.service.services.ProcessServiceChainManagerService;
 
 @Controller
@@ -30,7 +31,7 @@ public class ProjectServiceChainManagerController {
 	@GET
 	@Path("/list/{project}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<String> getProjectsList(@PathParam("project") String project) {
+	public List<ChainProjIdDescDTO> getProjectsList(@PathParam("project") String project) {
 
 		return manager.getChainProjectsList(project);
 
@@ -44,6 +45,15 @@ public class ProjectServiceChainManagerController {
 		return manager.getChainProjectSelected(project);
 
 	}
+	
+	@GET
+	@Path("/selectedComponent/{project}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getProjectComponentSelected(@PathParam("project") String project) {
+
+		return manager.getChainProjectComponentSelected(project);
+
+	}	
 
 	@GET
 	@Path("{projectId}")
@@ -74,10 +84,10 @@ public class ProjectServiceChainManagerController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Transactional
 	public Response updateProjectComponents(
-			@PathParam("projectId") int projectId, @PathParam("chainProj") String chainPrj,
-			@PathParam("component") String comp) {
+			@PathParam("projectId") int projectId, @PathParam("chainProj") int idChainPrj,
+			@PathParam("component") int idComp) {
 
-		manager.updateSelectedProjectComponent(projectId, chainPrj, comp);
+		manager.updateSelectedProjectComponent(projectId, idChainPrj, idComp);
 
 		String result = "Selected Project/Component updated!";
 
