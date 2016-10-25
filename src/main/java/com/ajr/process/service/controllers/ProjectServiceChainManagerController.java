@@ -29,6 +29,15 @@ public class ProjectServiceChainManagerController {
 	ProcessServiceChainManagerService manager;
 
 	@GET
+	@Path("{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ChainDTO getProjects(@PathParam("projectId") Integer projectId) {
+
+		return manager.getChainProjectById(projectId);
+
+	}	
+	
+	@GET
 	@Path("/list/{project}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<ChainProjIdDescDTO> getProjectsList(@PathParam("project") String project) {
@@ -40,29 +49,20 @@ public class ProjectServiceChainManagerController {
 	@GET
 	@Path("/selected/{project}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getProjectSelected(@PathParam("project") String project) {
+	public ChainProjIdDescDTO getSelectedProject(@PathParam("project") String project) {
 
 		return manager.getChainProjectSelected(project);
 
 	}
 	
-	@GET
-	@Path("/selectedComponent/{project}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public String getProjectComponentSelected(@PathParam("project") String project) {
-
-		return manager.getChainProjectComponentSelected(project);
-
-	}	
-
-	@GET
-	@Path("{projectId}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public ChainDTO getProjects(@PathParam("projectId") Integer projectId) {
-
-		return manager.getChainProjectById(projectId);
-
-	}
+//	@GET
+//	@Path("/selectedComponent/{project}")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public String getProjectComponentSelected(@PathParam("project") String project) {
+//
+//		return manager.getChainProjectComponentSelected(project);
+//
+//	}	
 
 	@POST
 	@Path("post/{project}")
