@@ -17,8 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ajr.process.service.dto.ChainComponentDTO;
 import com.ajr.process.service.dto.ChainDTO;
-import com.ajr.process.service.dto.ChainProjDTO;
-import com.ajr.process.service.dto.ChainProjIdDescDTO;
+import com.ajr.process.service.dto.ChainProjectDTO;
 import com.ajr.process.service.services.ProcessServiceChainManagerService;
 
 @Controller
@@ -40,36 +39,45 @@ public class ProjectServiceChainManagerController {
 	@GET
 	@Path("/list/{project}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<ChainProjIdDescDTO> getProjectsList(@PathParam("project") String project) {
+	public List<ChainProjectDTO> getProjectsList(@PathParam("project") String project) {
 
 		return manager.getChainProjectsList(project);
 
 	}
 	
 	@GET
-	@Path("/selected/{project}")
+	@Path("/selected")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ChainProjIdDescDTO getSelectedProject(@PathParam("project") String project) {
+	public ChainProjectDTO getSelectedProject() {
 
-		return manager.getChainProjectSelected(project);
+		return manager.getChainProjectSelected();
 
 	}
 	
-//	@GET
-//	@Path("/selectedComponent/{project}")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public String getProjectComponentSelected(@PathParam("project") String project) {
-//
-//		return manager.getChainProjectComponentSelected(project);
-//
-//	}	
+	@GET
+	@Path("/component/{project}/{component}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ChainComponentDTO getProjectComponentById(@PathParam("project") int projectId,@PathParam("component") int componentId) {
 
+		return manager.getChainProjectComponent(projectId, componentId);
+
+	}	
+
+	@GET
+	@Path("/component/selected/{project}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ChainComponentDTO getSelectedProjectComponent(@PathParam("project") String project) {
+
+		return manager.getChainSelectedProjectComponent(project);
+
+	}		
+	
 	@POST
 	@Path("post/{project}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Transactional
 	public Response createProject(@PathParam("project") String project,
-			ChainProjDTO chainProject) {
+			ChainProjectDTO chainProject) {
 
 		manager.insertProject(project, chainProject);
 
