@@ -46,11 +46,11 @@ public class ProjectServiceChainManagerController {
 	}
 	
 	@GET
-	@Path("/selected")
+	@Path("/selectChainProject/{project}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ChainProjectDTO getSelectedProject() {
+	public ChainProjectDTO getSelectedProject(@PathParam("project") String project) {
 
-		return manager.getChainProjectSelected();
+		return manager.getSelectedChainProject(project);
 
 	}
 	
@@ -64,11 +64,11 @@ public class ProjectServiceChainManagerController {
 	}	
 
 	@GET
-	@Path("/component/selected/{project}")
+	@Path("/selectProject/selectComponent/{project}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ChainComponentDTO getSelectedProjectComponent(@PathParam("project") String project) {
 
-		return manager.getChainSelectedProjectComponent(project);
+		return manager.getSelectedComponentFromSelectedChainProject(project);
 
 	}		
 	
