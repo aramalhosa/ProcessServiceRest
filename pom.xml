@@ -114,6 +114,18 @@
 			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
 			<version>${cxf.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-bundle-jaxrs</artifactId>
+			<version>${cxf.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-ws-policy</artifactId>
+			<version>${cxf.version}</version>
+		</dependency>		
 
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
