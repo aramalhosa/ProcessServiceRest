@@ -46,13 +46,31 @@ public class ProjectServiceChainManagerController {
 	}
 	
 	@GET
+	@Path("/componentslist/{idChainProject}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<ChainComponentDTO> getChainProjectComponentsList(@PathParam("idChainProject") int idProject) {
+
+		return manager.getChainProjectComponentsList(idProject);
+
+	}	
+	
+	@GET
+	@Path("/selectChainProject/componentsList/{project}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<ChainComponentDTO> getSelectedProjectComponentsList(@PathParam("project") String project) {
+
+		return manager.getSelectedChainProjectComponentsList(project);
+
+	}
+	
+	@GET
 	@Path("/selectChainProject/{project}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ChainProjectDTO getSelectedProject(@PathParam("project") String project) {
 
 		return manager.getSelectedChainProject(project);
 
-	}
+	}	
 	
 	@GET
 	@Path("/component/{project}/{component}")
