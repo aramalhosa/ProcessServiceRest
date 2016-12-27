@@ -20,8 +20,8 @@ import com.ajr.process.service.dto.ChainDTO;
 import com.ajr.process.service.dto.ChainProjectDTO;
 import com.ajr.process.service.services.ProcessServiceChainManagerService;
 
+@Path("")
 @Controller
-@Path("/chainProjects")
 public class ProjectServiceChainManagerController {
 
 	@Autowired
@@ -71,7 +71,7 @@ public class ProjectServiceChainManagerController {
 		return manager.getSelectedChainProject(project);
 
 	}	
-	
+		
 	@GET
 	@Path("/component/{project}/{component}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -82,11 +82,20 @@ public class ProjectServiceChainManagerController {
 	}	
 
 	@GET
-	@Path("/selectProject/selectComponent/{project}")
+	@Path("/selectChainProject/selectComponent/{project}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ChainComponentDTO getSelectedProjectComponent(@PathParam("project") String project) {
 
 		return manager.getSelectedComponentFromSelectedChainProject(project);
+
+	}		
+	
+	@GET
+	@Path("/relations/{projectId}/{componentId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<ChainComponentDTO> getProjectComponentRelations(@PathParam("projectId") int project, @PathParam("componentId") int component) {
+
+		return manager.getComponentRelations(project, component);
 
 	}		
 	

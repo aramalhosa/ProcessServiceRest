@@ -10,32 +10,46 @@
         http://cxf.apache.org/jaxrs
         http://cxf.apache.org/schemas/jaxrs.xsd">
 
+<!--  
+
 	<context:component-scan base-package="com.ajr.process.service.dao" />
 	<context:component-scan base-package="com.ajr.process.service.services" />
 	<context:component-scan base-package="com.ajr.process.service.controllers" />
+-->	
+	
+	<!-- Autowired definitions -->
+	<context:component-scan base-package="com.ajr.process.service.dao" />
+	<context:component-scan base-package="com.ajr.process.service.services" />
 	<context:annotation-config />
-
+	  
 	<bean
 		class="org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer" />
 	<bean
 		class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer" />
 
-	<!-- Client Infrastructure --> 
-
+	<!-- Client Infrastructure -->
 	<import resource="classpath:beans.xml" />
-
-	<jaxrs:server id="services" address="/">
+	
+	<!-- Aspect Log -->
+	<import resource="classpath:spring-process-service-aspect.xml" />
+	
+	
+	<jaxrs:server id="servicesMenu" address="/menuDefinitions/">
 		<jaxrs:serviceBeans>
-			<bean
-				class="com.ajr.process.service.controllers.ProcessServiceMenuManagerController" />
-			<bean
-				class="com.ajr.process.service.controllers.ProjectServiceChainManagerController" />
-		</jaxrs:serviceBeans>
+			<bean class="com.ajr.process.service.controllers.ProcessServiceMenuManagerController" />
+		</jaxrs:serviceBeans>	
 		<jaxrs:providers>
 			<bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
 		</jaxrs:providers>
 	</jaxrs:server>
 	
-	<import resource="classpath:spring-process-service-aspect.xml" />
+	<jaxrs:server id="servicesChain" address="/chainProjects/">
+		<jaxrs:serviceBeans>
+			<bean class="com.ajr.process.service.controllers.ProjectServiceChainManagerController" />
+		</jaxrs:serviceBeans>	
+		<jaxrs:providers>
+			<bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>	
 
 </beans>

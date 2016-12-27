@@ -23,8 +23,8 @@ import com.ajr.process.service.dto.SubMenu2CellDTO;
 import com.ajr.process.service.dto.SubMenuDataDTO;
 import com.ajr.process.service.services.ProcessServiceMenuManagerService;
 
+@Path("")
 @Controller
-@Path("/menuDefinitions")
 public class ProcessServiceMenuManagerController {
 
 	@Autowired
