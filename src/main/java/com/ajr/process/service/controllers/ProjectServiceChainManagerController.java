@@ -91,11 +91,11 @@ public class ProjectServiceChainManagerController {
 	}		
 	
 	@GET
-	@Path("/relations/{projectId}/{componentId}")
+	@Path("/relations/{componentId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<ChainComponentDTO> getProjectComponentRelations(@PathParam("projectId") int project, @PathParam("componentId") int component) {
+	public List<ChainComponentDTO> getProjectComponentRelations(@PathParam("componentId") int component) {
 
-		return manager.getComponentRelations(project, component);
+		return manager.getComponentRelations(component);
 
 	}		
 	
