@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ajr.process.service.dto.ChainComponentDTO;
 import com.ajr.process.service.dto.ChainDTO;
 import com.ajr.process.service.dto.ChainProjectDTO;
+import com.ajr.process.service.entity.ComponentRelation;
 import com.ajr.process.service.services.ProcessServiceChainManagerService;
 
 @Path("")
@@ -93,11 +94,15 @@ public class ProjectServiceChainManagerController {
 	@GET
 	@Path("/relations/{componentId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<ChainComponentDTO> getProjectComponentRelations(@PathParam("componentId") int component) {
+	public List<ComponentRelation> getProjectComponentRelations(@PathParam("componentId") int component) {
 
-		return manager.getComponentRelations(component);
+		//return manager.getComponentRelations(component); -> ChainComponentDTO
+		
+		return manager.getRelations();
 
-	}		
+	}	
+	
+	
 	
 	@POST
 	@Path("post/{project}")
@@ -119,10 +124,10 @@ public class ProjectServiceChainManagerController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Transactional
 	public Response updateProjectComponents(
-			@PathParam("projectId") int projectId, @PathParam("chainProj") int idChainPrj,
+			@PathParam("project") String project, @PathParam("chainProj") int idChainPrj,
 			@PathParam("component") int idComp) {
 
-		manager.updateSelectedProjectComponent(projectId, idChainPrj, idComp);
+		manager.updateSelectedProjectComponent(project, idChainPrj, idComp);
 
 		String result = "Selected Project/Component updated!";
 
