@@ -18,7 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ajr.process.service.dto.ChainComponentDTO;
 import com.ajr.process.service.dto.ChainDTO;
 import com.ajr.process.service.dto.ChainProjectDTO;
-import com.ajr.process.service.entity.ComponentRelation;
+import com.ajr.process.service.dto.ChainRelationDTO;
+import com.ajr.process.service.exceptions.AttributeAlreadyExistsException;
 import com.ajr.process.service.services.ProcessServiceChainManagerService;
 
 @Path("")
@@ -74,11 +75,11 @@ public class ProjectServiceChainManagerController {
 	}	
 		
 	@GET
-	@Path("/component/{project}/{component}")
+	@Path("/component/{component}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ChainComponentDTO getProjectComponentById(@PathParam("project") int projectId,@PathParam("component") int componentId) {
+	public ChainComponentDTO getProjectComponentById(@PathParam("component") int componentId) {
 
-		return manager.getChainProjectComponent(projectId, componentId);
+		return manager.getChainProjectComponent(componentId);
 
 	}	
 
@@ -94,11 +95,11 @@ public class ProjectServiceChainManagerController {
 	@GET
 	@Path("/relations/{componentId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<ComponentRelation> getProjectComponentRelations(@PathParam("componentId") int component) {
+	public List<ChainRelationDTO> getProjectComponentRelations(@PathParam("componentId") int component) {
 
 		//return manager.getComponentRelations(component); -> ChainComponentDTO
 		
-		return manager.getRelations();
+		return manager.getRelations(component);
 
 	}	
 	
@@ -136,20 +137,45 @@ public class ProjectServiceChainManagerController {
 	}	
 
 	@POST
-	@Path("post/components/{projectId}")
+	@Path("post/newcomponent/{project}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Transactional
 	public Response createProjectComponents(
-			@PathParam("projectId") int projectId,
-			List<ChainComponentDTO> components) {
+			@PathParam("project") String project,
+			ChainComponentDTO component) {
 
-		manager.insertProjectComponents(projectId, components);
+		try {
+			manager.insertProjectComponent(project, component);
+			
+		} catch (AttributeAlreadyExistsException e) {
+
+			String result = "Attribute already exists for this project!";
+
+			return Response.status(418).entity(result).build();	
+			
+		}
 
 		String result = "Project Components created!";
 
 		return Response.status(201).entity(result).build();
 
 	}
+	
+	@POST
+	@Path("post/newcomponentsrelation/{component1}/{component2}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Transactional
+	public Response createProjectComponents(
+			@PathParam("component1") int compId1,
+			@PathParam("component2") int compId2) {
+
+			manager.insertComponentsRelation(compId1, compId2);
+	
+			String result = "Relation created!";
+
+		return Response.status(201).entity(result).build();
+
+	}	
 
 	@POST
 	@Path("post/update/components/{projectId}")
@@ -164,6 +190,7 @@ public class ProjectServiceChainManagerController {
 		String result = "Project Components updated!";
 
 		return Response.status(201).entity(result).build();
+		
 
 	}
 
