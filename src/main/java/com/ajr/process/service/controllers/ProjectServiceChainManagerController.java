@@ -103,6 +103,15 @@ public class ProjectServiceChainManagerController {
 
 	}	
 	
+	@GET
+	@Path("/newrelations/{chainProjId}/{componentId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<ChainRelationDTO> getProjectComponentRelations(@PathParam("chainProjId") int chainProj, @PathParam("componentId") int component) {
+		
+		return manager.getNewRelations(chainProj, component);
+
+	}	
+	
 	
 	
 	@POST
