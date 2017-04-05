@@ -202,5 +202,19 @@ public class ProjectServiceChainManagerController {
 		
 
 	}
+	
+	@POST
+	@Path("post/relations/{componentId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Transactional
+	public Response updateComponentRelations(@PathParam("componentId") int componentId, List<ChainRelationDTO> relations) {
+
+		manager.updateComponentRelations(componentId, relations);
+
+		String result = "Project Components updated!";
+
+		return Response.status(201).entity(result).build();
+
+	}	
 
 }
