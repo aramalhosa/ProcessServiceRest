@@ -1,5 +1,6 @@
 package com.ajr.process.service.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -36,84 +37,91 @@ public class ProjectServiceChainManagerController {
 
 		return manager.getChainProjectById(projectId);
 
-	}	
-	
+	}
+
 	@GET
 	@Path("/list/{project}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<ChainProjectDTO> getProjectsList(@PathParam("project") String project) {
+	public List<ChainProjectDTO> getProjectsList(
+			@PathParam("project") String project) {
 
 		return manager.getChainProjectsList(project);
 
 	}
-	
+
 	@GET
 	@Path("/componentslist/{idChainProject}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<ChainComponentDTO> getChainProjectComponentsList(@PathParam("idChainProject") int idProject) {
+	public List<ChainComponentDTO> getChainProjectComponentsList(
+			@PathParam("idChainProject") int idProject) {
 
 		return manager.getChainProjectComponentsList(idProject);
 
-	}	
-	
+	}
+
 	@GET
 	@Path("/selectChainProject/componentsList/{project}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<ChainComponentDTO> getSelectedProjectComponentsList(@PathParam("project") String project) {
+	public List<ChainComponentDTO> getSelectedProjectComponentsList(
+			@PathParam("project") String project) {
 
 		return manager.getSelectedChainProjectComponentsList(project);
 
 	}
-	
+
 	@GET
 	@Path("/selectChainProject/{project}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ChainProjectDTO getSelectedProject(@PathParam("project") String project) {
+	public ChainProjectDTO getSelectedProject(
+			@PathParam("project") String project) {
 
 		return manager.getSelectedChainProject(project);
 
-	}	
-		
+	}
+
 	@GET
 	@Path("/component/{component}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ChainComponentDTO getProjectComponentById(@PathParam("component") int componentId) {
+	public ChainComponentDTO getProjectComponentById(
+			@PathParam("component") int componentId) {
 
 		return manager.getChainProjectComponent(componentId);
 
-	}	
+	}
 
 	@GET
 	@Path("/selectChainProject/selectComponent/{project}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ChainComponentDTO getSelectedProjectComponent(@PathParam("project") String project) {
+	public ChainComponentDTO getSelectedProjectComponent(
+			@PathParam("project") String project) {
 
 		return manager.getSelectedComponentFromSelectedChainProject(project);
 
-	}		
-	
+	}
+
 	@GET
 	@Path("/relations/{componentId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<ChainRelationDTO> getProjectComponentRelations(@PathParam("componentId") int component) {
+	public List<ChainRelationDTO> getProjectComponentRelations(
+			@PathParam("componentId") int component) {
 
-		//return manager.getComponentRelations(component); -> ChainComponentDTO
-		
+		// return manager.getComponentRelations(component); -> ChainComponentDTO
+
 		return manager.getRelations(component);
 
-	}	
-	
+	}
+
 	@GET
 	@Path("/newrelations/{chainProjId}/{componentId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<ChainRelationDTO> getProjectComponentRelations(@PathParam("chainProjId") int chainProj, @PathParam("componentId") int component) {
-		
+	public List<ChainRelationDTO> getProjectComponentRelations(
+			@PathParam("chainProjId") int chainProj,
+			@PathParam("componentId") int component) {
+
 		return manager.getNewRelations(chainProj, component);
 
-	}	
-	
-	
-	
+	}
+
 	@POST
 	@Path("post/{project}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -128,13 +136,14 @@ public class ProjectServiceChainManagerController {
 		return Response.status(201).entity(result).build();
 
 	}
-	
+
 	@POST
 	@Path("post/selectedOptions/{projectId}/{chainProj}/{component}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Transactional
 	public Response updateProjectComponents(
-			@PathParam("project") String project, @PathParam("chainProj") int idChainPrj,
+			@PathParam("project") String project,
+			@PathParam("chainProj") int idChainPrj,
 			@PathParam("component") int idComp) {
 
 		manager.updateSelectedProjectComponent(project, idChainPrj, idComp);
@@ -143,25 +152,24 @@ public class ProjectServiceChainManagerController {
 
 		return Response.status(201).entity(result).build();
 
-	}	
+	}
 
 	@POST
 	@Path("post/newcomponent/{project}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Transactional
 	public Response createProjectComponents(
-			@PathParam("project") String project,
-			ChainComponentDTO component) {
+			@PathParam("project") String project, ChainComponentDTO component) {
 
 		try {
 			manager.insertProjectComponent(project, component);
-			
+
 		} catch (AttributeAlreadyExistsException e) {
 
 			String result = "Attribute already exists for this project!";
 
-			return Response.status(418).entity(result).build();	
-			
+			return Response.status(418).entity(result).build();
+
 		}
 
 		String result = "Project Components created!";
@@ -169,7 +177,7 @@ public class ProjectServiceChainManagerController {
 		return Response.status(201).entity(result).build();
 
 	}
-	
+
 	@POST
 	@Path("post/newcomponentsrelation/{component1}/{component2}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -178,13 +186,13 @@ public class ProjectServiceChainManagerController {
 			@PathParam("component1") int compId1,
 			@PathParam("component2") int compId2) {
 
-			manager.insertComponentsRelation(compId1, compId2);
-	
-			String result = "Relation created!";
+		manager.insertComponentsRelation(compId1, compId2);
+
+		String result = "Relation created!";
 
 		return Response.status(201).entity(result).build();
 
-	}	
+	}
 
 	@POST
 	@Path("post/update/components/{projectId}")
@@ -199,22 +207,23 @@ public class ProjectServiceChainManagerController {
 		String result = "Project Components updated!";
 
 		return Response.status(201).entity(result).build();
-		
 
 	}
-	
+
 	@POST
 	@Path("post/relations/{componentId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Transactional
-	public Response updateComponentRelations(@PathParam("componentId") int componentId, List<ChainRelationDTO> relations) {
+	public Response updateComponentRelations(
+			@PathParam("componentId") int componentId, List<Integer> relations) {
 
 		manager.updateComponentRelations(componentId, relations);
 
-		String result = "Project Components updated!";
+		String result = "Component relations updated!";
 
 		return Response.status(201).entity(result).build();
 
-	}	
+	}
+
 
 }
