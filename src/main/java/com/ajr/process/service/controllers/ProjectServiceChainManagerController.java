@@ -141,7 +141,7 @@ public class ProjectServiceChainManagerController {
 	@Path("post/selectedOptions/{projectId}/{chainProj}/{component}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Transactional
-	public Response updateProjectComponents(
+	public Response updateProjectComponent(
 			@PathParam("project") String project,
 			@PathParam("chainProj") int idChainPrj,
 			@PathParam("component") int idComp) {
@@ -158,7 +158,7 @@ public class ProjectServiceChainManagerController {
 	@Path("post/newcomponent/{project}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Transactional
-	public Response createProjectComponents(
+	public Response createProjectComponent(
 			@PathParam("project") String project, ChainComponentDTO component) {
 
 		try {
@@ -172,7 +172,7 @@ public class ProjectServiceChainManagerController {
 
 		}
 
-		String result = "Project Components created!";
+		String result = "";
 
 		return Response.status(201).entity(result).build();
 
@@ -214,16 +214,46 @@ public class ProjectServiceChainManagerController {
 	@Path("post/relations/{componentId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Transactional
-	public Response updateComponentRelations(
+	public Response createComponentRelations(
 			@PathParam("componentId") int componentId, List<Integer> relations) {
 
 		manager.updateComponentRelations(componentId, relations);
 
-		String result = "Component relations updated!";
+		String result = "";
 
 		return Response.status(201).entity(result).build();
 
 	}
+	
+	@POST
+	@Path("post/removeComponent")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Transactional
+	public Response removeComponent() {
 
+		//manager.removeProjectComponent(componentId);
+		
+		System.out.println("Passei na invocação!");
+
+		String result = "";
+
+		return Response.status(201).entity(result).build();
+
+	}	
+
+	@POST
+	@Path("post/removeComponent/{componentId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Transactional
+	public Response removeComponent(
+			@PathParam("componentId") int componentId) {
+
+		manager.removeProjectComponent(componentId);
+
+		String result = "";
+
+		return Response.status(201).entity(result).build();
+
+	}
 
 }
